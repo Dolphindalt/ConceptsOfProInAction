@@ -1,0 +1,19 @@
+external func put_int(val: int) -> void
+
+func do_math(a: int) -> int {
+    let x: int = a * 5
+    x = x + 3
+    ret x
+}
+
+func do_nothing() -> void {
+    let r: int = 2 + 2
+    put_int(r)
+}
+
+let y: int = do_math(10)
+put_int(y)
+
+do_nothing()
+
+echo(10)
