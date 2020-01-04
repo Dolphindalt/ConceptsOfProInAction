@@ -1,0 +1,117 @@
+cat example.txt | ./parser
+0x25cc610
+Generating le code...
+Generating code for 18NExternDeclaration
+Generating code for 20NFunctionDeclaration
+Creating variable declaration int a
+Generating code for 20NVariableDeclaration
+Creating variable declaration int x
+Creating assignment for x
+Creating binary operation: 277
+Creating integer: 5
+Creating identifier reference: a
+Generating code for 20NExpressionStatement
+Generating code for 11NAssignment
+Creating assignment for x
+Creating binary operation: 275
+Creating integer: 3
+Creating identifier reference: x
+Generating code for 16NReturnStatement
+Generating code for 11NIdentifier
+Creating identifier reference: x
+Creating block
+Creating function: do_math
+Generating code for 20NFunctionDeclaration
+Generating code for 20NVariableDeclaration
+Creating variable declaration int r
+Creating assignment for r
+Creating binary operation: 275
+Creating integer: 2
+Creating integer: 2
+Generating code for 20NExpressionStatement
+Generating code for 11NMethodCall
+Creating identifier reference: r
+Creating function call: put_int
+Creating block
+Creating function: do_nothing
+Generating code for 20NVariableDeclaration
+Creating variable declaration int y
+Creating assignment for y
+Creating integer: 10
+Creating function call: do_math
+Generating code for 20NExpressionStatement
+Generating code for 11NMethodCall
+Creating identifier reference: y
+Creating function call: put_int
+Generating code for 20NVariableDeclaration
+Creating variable declaration bool u
+Creating assignment for u
+Creating integer: 5
+Creating integer: 5
+Generating code for 20NExpressionStatement
+Generating code for 11NMethodCall
+Creating identifier reference: u
+Creating function call: echo
+Generating code for 20NExpressionStatement
+Generating code for 11NMethodCall
+Creating function call: do_nothing
+Generating code for 20NExpressionStatement
+Generating code for 11NMethodCall
+Creating integer: 10
+Creating function call: echo
+Creating block
+; ModuleID = 'main'
+
+@.str = private constant [4 x i8] c"%d\0A\00"
+
+declare i32 @printf(i8*, ...)
+
+define internal void @echo(i64 %toPrint) {
+entry:
+  %0 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i32 0, i32 0), i64 %toPrint)
+  ret void
+}
+
+define internal void @main() {
+entry:
+  %y = alloca i64
+  %0 = call i64 @do_math(i64 10)
+  store i64 %0, i64* %y
+  %1 = load i64, i64* %y
+  call void @put_int(i64 %1)
+  %u = alloca void
+  %2 = icmp eq i64 5, 5
+  store i1 %2, void* %u
+  load void, void* %u
+  call void @echo(void <badref>)
+  call void @do_nothing()
+  call void @echo(i64 10)
+  ret void
+}
+
+declare void @put_int(i64)
+
+define internal i64 @do_math(i64 %a1) {
+entry:
+  %a = alloca i64
+  store i64 %a1, i64* %a
+  %x = alloca i64
+  %0 = load i64, i64* %a
+  %1 = mul i64 %0, 5
+  store i64 %1, i64* %x
+  %2 = load i64, i64* %x
+  %3 = add i64 %2, 3
+  store i64 %3, i64* %x
+  %4 = load i64, i64* %x
+  ret i64 %4
+}
+
+define internal void @do_nothing() {
+entry:
+  %r = alloca i64
+  %0 = add i64 2, 2
+  store i64 %0, i64* %r
+  %1 = load i64, i64* %r
+  call void @put_int(i64 %1)
+  ret void
+}

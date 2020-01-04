@@ -196,3 +196,29 @@ Value *NExternDeclaration::codeGen(CodeGenContext &context)
     Function *function = Function::Create(ftype, GlobalValue::ExternalLinkage, id.name.c_str(), context.module);
     return function;
 }
+
+Value *NEqualityExpression::codeGen(CodeGenContext &context)
+{
+    CmpInst::OtherOps ops = CmpInst::ICmp;
+    CmpInst::Predicate pred;
+    switch (op)
+    {
+        case (TCLT):
+            pred = ICmpInst::ICMP_SLT; break;
+        case (TCLE):
+            pred = ICmpInst::ICMP_SLE; break;
+        case (TCGT):
+            pred = ICmpInst::ICMP_SGT; break;
+        case (TCGE):
+            pred = ICmpInst::ICMP_SGE; break;
+        case(TCNE):
+            pred = ICmpInst::ICMP_NE; break;
+        case (TCEQ):
+            pred = ICmpInst::ICMP_EQ; break;
+        default:
+            std::cerr << "failed to match expression comparator" << std::endl;
+            break;
+    }
+    
+    return CmpInst::Create(ops, pred, lhs.codeGen(context), rhs.codeGen(context), "", context.currentBlock());
+}

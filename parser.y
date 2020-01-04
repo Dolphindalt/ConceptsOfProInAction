@@ -33,7 +33,7 @@
 %type <exprvec> call_args
 %type <block> program stmts block
 %type <stmt> stmt var_decl func_decl func_var_decl extern_decl
-%type <token> comparison
+%type <token> comparison equality_comparator
 
 // Operator precedence.
 %left TPLUS TMINUS
@@ -91,6 +91,7 @@ numeric : TINTEGER { $$ = new NInteger(atol($1->c_str())); delete $1; }
 sub_expr    : ident { $<ident>$ = $1; }
             | numeric
             | expr comparison expr { $$ = new NBinaryOperator(*$1, $2, *$3); }
+            | expr equality_comparator expr { $$ = new NEqualityExpression(*$1, $2, *$3); }
             | TLPAREN expr TRPAREN { $$ = $2; }
 
 expr    : ident TEQUAL expr { $$ = new NAssignment(*$<ident>1, *$3); }
@@ -103,8 +104,10 @@ call_args   : /*blank*/ { $$ = new ExpressionList(); }
             | call_args TCOMMA sub_expr { $1->push_back($3); }
             ;
 
-comparison  : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE
-            | TPLUS | TMINUS | TMUL | TDIV
+comparison  : TPLUS | TMINUS | TMUL | TDIV
             ;
+
+equality_comparator : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE
+                    ;
 
 %%

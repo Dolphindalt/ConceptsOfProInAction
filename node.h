@@ -127,3 +127,13 @@ public:
         type(type), id(id), arguments(arguments) {}
     virtual llvm::Value *codeGen(CodeGenContext &context);
 };
+
+class NEqualityExpression : public NExpression {
+public:
+    int op;
+    NExpression &lhs;
+    NExpression &rhs;
+    NEqualityExpression(NExpression &lhs, int op, NExpression &rhs) :
+        lhs(lhs), rhs(rhs), op(op) {}
+    virtual llvm::Value *codeGen(CodeGenContext &context);
+};

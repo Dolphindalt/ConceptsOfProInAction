@@ -17,3 +17,6 @@ put_int(y)
 do_nothing()
 
 echo(10)
+
+echo(5 == 4)
+echo(5 == 5)
